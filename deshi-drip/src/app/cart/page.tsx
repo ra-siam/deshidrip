@@ -3,6 +3,7 @@ import CartItemRow from "@/components/CartItemRow";
 import { formatCurrencyFromCents } from "@/lib/currency";
 import Link from "next/link";
 import PlaceOrder from "./place-order";
+import ShippingSelector from "./shipping-selector";
 
 export default async function CartPage() {
   const cookieId = await getCartCookieId();
@@ -30,6 +31,7 @@ export default async function CartPage() {
               <div className="text-sm text-zinc-600">Subtotal</div>
               <div className="font-medium">{formatCurrencyFromCents(subtotal)}</div>
             </div>
+            <ShippingSelector />
             <PlaceOrder />
           </div>
         </div>

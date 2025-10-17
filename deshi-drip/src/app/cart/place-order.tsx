@@ -12,10 +12,16 @@ export default function PlaceOrder() {
     setMessage(null);
     startTransition(async () => {
       try {
-        const res = await fetch("/api/checkout", { method: "POST" });
+        const url = new URL(window.location.href);
+        const shippingOptionId = url.searchParams.get("shipping");
+        const res = await fetch("/api/checkout/stripe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shippingOptionId }) });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to checkout");
-        setMessage(`Success: ${data.orderId} — total ${(data.subtotalCents/100).toFixed(2)}`);
+        if (data.url) {
+          window.location.href = data.url;
+        } else {
+          setMessage("Checkout created");
+        }
       } catch (e) {
         const msg = e instanceof Error ? e.message : "Failed to checkout";
         setError(msg);
