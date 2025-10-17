@@ -1,0 +1,35 @@
+"use client";
+
+import { useState, useTransition } from "react";
+
+export default function PlaceOrder() {
+  const [pending, startTransition] = useTransition();
+  const [message, setMessage] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const placeOrder = () => {
+    setError(null);
+    setMessage(null);
+    startTransition(async () => {
+      try {
+        const res = await fetch("/api/checkout", { method: "POST" });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to checkout");
+        setMessage(`Success: ${data.orderId} — total ${(data.subtotalCents/100).toFixed(2)}`);
+      } catch (e) {
+        const msg = e instanceof Error ? e.message : "Failed to checkout";
+        setError(msg);
+      }
+    });
+  };
+
+  return (
+    <div>
+      <button onClick={placeOrder} disabled={pending} className="w-full rounded-md bg-black text-white py-2 px-3 text-sm">
+        {pending ? "Placing order…" : "Checkout"}
+      </button>
+      {message && <div className="text-xs text-green-700 mt-2">{message}</div>}
+      {error && <div className="text-xs text-red-600 mt-2">{error}</div>}
+    </div>
+  );
+}
