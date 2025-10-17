@@ -32,6 +32,17 @@ export default async function CartPage() {
               <div className="font-medium">{formatCurrencyFromCents(subtotal)}</div>
             </div>
             <ShippingSelector />
+            <div className="space-y-2">
+              <div className="text-sm text-zinc-600">Payment</div>
+              <div className="flex items-center gap-4 text-sm">
+                <label className="flex items-center gap-2">
+                  <input type="radio" name="pm" value="cod" defaultChecked /> Cash on Delivery
+                </label>
+                <label className="flex items-center gap-2">
+                  <input type="radio" name="pm" value="online" /> Online (SSLCOMMERZ)
+                </label>
+              </div>
+            </div>
             <PlaceOrder />
           </div>
         </div>

@@ -14,13 +14,15 @@ export default function PlaceOrder() {
       try {
         const url = new URL(window.location.href);
         const shippingOptionId = url.searchParams.get("shipping");
-        const res = await fetch("/api/checkout/sslcommerz", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shippingOptionId }) });
+        const method = (document.querySelector('input[name="pm"]:checked') as HTMLInputElement | null)?.value || 'cod';
+        const endpoint = method === 'cod' ? "/api/checkout/cod" : "/api/checkout/sslcommerz";
+        const res = await fetch(endpoint, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shippingOptionId }) });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to checkout");
         if (data.url) {
           window.location.href = data.url;
         } else {
-          setMessage("Checkout created");
+          setMessage(data.message || "Order placed");
         }
       } catch (e) {
         const msg = e instanceof Error ? e.message : "Failed to checkout";
