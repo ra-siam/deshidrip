@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
-import { Menu, X, ShoppingBag, Search } from 'lucide-react';
+import { Menu, X, ShoppingBag, Search, Sparkles } from 'lucide-react';
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,6 +25,10 @@ export default function Navbar() {
             </Link>
             <Link href="/bundles" className="hover:text-gray-300 transition">
               Bundles
+            </Link>
+            <Link href="/bundle-builder" className="hover:text-gray-300 transition flex items-center gap-1">
+              <Sparkles className="w-4 h-4" />
+              Bundle Builder
             </Link>
             <Link href="/exclusives" className="hover:text-gray-300 transition">
               World Exclusives
@@ -93,6 +97,14 @@ export default function Navbar() {
               onClick={() => setIsMenuOpen(false)}
             >
               Bundles
+            </Link>
+            <Link
+              href="/bundle-builder"
+              className="block py-2 hover:text-gray-300 transition flex items-center gap-1"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              <Sparkles className="w-4 h-4" />
+              Bundle Builder
             </Link>
             <Link
               href="/exclusives"

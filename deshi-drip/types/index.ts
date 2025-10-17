@@ -28,6 +28,14 @@ export interface Bundle {
   image: string;
 }
 
+export interface CustomBundle {
+  id: string;
+  name: string;
+  products: { product: Product; quantity: number }[];
+  discount: number; // percentage discount
+  createdAt: string;
+}
+
 export interface CartItem {
   product: Product;
   quantity: number;
@@ -41,4 +49,39 @@ export interface WeeklyDrop {
   releaseDate: string;
   products: Product[];
   featured: boolean;
+}
+
+export interface Order {
+  id: string;
+  orderNumber: string;
+  items: CartItem[];
+  subtotal: number;
+  shippingCost: number;
+  paymentFee: number;
+  total: number;
+  customer: {
+    email: string;
+    firstName: string;
+    lastName: string;
+    phone: string;
+  };
+  shippingAddress: {
+    division: string;
+    district: string;
+    area: string;
+    address: string;
+  };
+  payment: {
+    method: string;
+    transactionId?: string;
+    status: 'pending' | 'paid' | 'failed';
+  };
+  shippingDetails: {
+    provider: string;
+    trackingNumber?: string;
+    status: 'pending' | 'processing' | 'shipped' | 'delivered';
+  };
+  status: 'pending' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  createdAt: string;
+  updatedAt: string;
 }
