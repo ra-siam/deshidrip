@@ -8,8 +8,8 @@ export type ShippingOption = {
 };
 
 export const SHIPPING_OPTIONS: ShippingOption[] = [
-  { id: "standard", label: "Standard (3-7 days)", priceCents: 500, eta: "3-7 business days" },
-  { id: "express", label: "Express (1-3 days)", priceCents: 1500, eta: "1-3 business days" },
+  { id: "standard", label: "Inside Dhaka (2-3 days)", priceCents: 8000, eta: "2-3 days" },
+  { id: "express", label: "Outside Dhaka (3-7 days)", priceCents: 12000, eta: "3-7 days" },
 ];
 
 export function getShippingById(id: string | null | undefined): ShippingOption | null {

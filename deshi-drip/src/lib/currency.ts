@@ -1,6 +1,7 @@
 export function formatCurrencyFromCents(cents: number): string {
-  return (cents / 100).toLocaleString("en-US", {
+  return (cents / 100).toLocaleString("en-BD", {
     style: "currency",
-    currency: "USD",
+    currency: "BDT",
+    currencyDisplay: "symbol",
   });
 }

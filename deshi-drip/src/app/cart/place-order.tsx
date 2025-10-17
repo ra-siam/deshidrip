@@ -14,7 +14,7 @@ export default function PlaceOrder() {
       try {
         const url = new URL(window.location.href);
         const shippingOptionId = url.searchParams.get("shipping");
-        const res = await fetch("/api/checkout/stripe", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shippingOptionId }) });
+        const res = await fetch("/api/checkout/sslcommerz", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ shippingOptionId }) });
         const data = await res.json();
         if (!res.ok) throw new Error(data.error || "Failed to checkout");
         if (data.url) {
