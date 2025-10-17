@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Brand {
+  id          Int       @id @default(autoincrement())
+  slug        String    @unique
+  name        String
+  description String?
+  logoUrl     String?
+  products    Product[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model Product {
+  id                    Int             @id @default(autoincrement())
+  slug                  String          @unique
+  name                  String
+  description           String?
+  brandId               Int
+  brand                 Brand           @relation(fields: [brandId], references: [id])
+  priceCents            Int
+  compareAtPriceCents   Int?
+  currency              String          @default("USD")
+  images                Json?
+  worldExclusive        Boolean         @default(false)
+  active                Boolean         @default(true)
+  variants              ProductVariant[]
+  drops                 DropProduct[]
+  bundleItems           BundleItem[]
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+}
+
+model ProductVariant {
+  id          Int      @id @default(autoincrement())
+  productId   Int
+  product     Product  @relation(fields: [productId], references: [id])
+  sku         String   @unique
+  title       String
+  option1     String?
+  option2     String?
+  option3     String?
+  stock       Int      @default(0)
+  priceCents  Int?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Drop {
+  id          Int           @id @default(autoincrement())
+  slug        String        @unique
+  title       String
+  description String?
+  releaseAt   DateTime
+  isWeekly    Boolean       @default(true)
+  active      Boolean       @default(true)
+  products    DropProduct[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model DropProduct {
+  dropId    Int
+  productId Int
+  position  Int     @default(0)
+  drop      Drop    @relation(fields: [dropId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@id([dropId, productId])
+}
+
+model Bundle {
+  id                   Int          @id @default(autoincrement())
+  slug                 String       @unique
+  title                String
+  description          String?
+  discountPercent      Int?
+  discountAmountCents  Int?
+  active               Boolean      @default(true)
+  items                BundleItem[]
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+}
+
+model BundleItem {
+  id        Int     @id @default(autoincrement())
+  bundleId  Int
+  productId Int
+  quantity  Int     @default(1)
+
+  bundle    Bundle  @relation(fields: [bundleId], references: [id])
+  product   Product @relation(fields: [productId], references: [id])
+}
